@@ -1,0 +1,14 @@
+{
+  "name": "Node-Wiki",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "main": "./alchemyapi.js",
+  "dependencies": {
+    "ejs": "*",
+    "express": "3.5.1",
+    "request": "^2.51.0"
+  }
+}

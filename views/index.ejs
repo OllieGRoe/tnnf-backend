@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NodeJs Wikipedia API</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h2 align="center"> Web Application to use Wikipedia API to access wikipedia Details </h2>
+    <hr/>
+    <form method="post" action="" id="search">
+      Enter the title that you want to search
+      <input type="text" name="title" id="title"/>
+      <br/>
+      Enter the limit for wikipedia search result
+      <input type="text" name="limit" id="limit"/>
+      <br/>
+      <input type="submit" value="Search"/>
+    </form>
+    <h2 align="center">Results of wikipedia Search</h2>
+    <hr/>
+    <table id="searchResult" name="searchResult" border="1">
+      <tr>
+        <td id="name" class="name">Name</td>
+        <td id="link">Link of wikipedia Page</td>
+      </tr>
+      <br/><br/>
+    </table>
+    <h2 align="center">Details of <span id="topic_name"></span> are here from Wikipedia</h2>
+    <hr>
+    <h3>Final Wiki Link</h3>
+		<textarea rows='20' class='form-control' id='response'></textarea>
+
+    <h1>Entity Extraction</h1>
+
+		<h3>Response Object</h3>
+		<textarea rows='20' class='form-control' id='entity_response'</textarea>
+
+
+
+		<hr>
+
+  </body>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js">
+  </script>
+  <script type='text/javascript'>
+    $(document).ready(function(){
+      $('#search').submit(function(e) {
+        e.preventDefault();
+        var i=1,flag=0;
+        var url = "";
+
+        $.ajax({
+            type: 'POST',
+            url: '/users',
+            async: false,
+            data: $(this).serialize(),
+            error: function(e) {
+              console.log(e+"1");
+
+            },
+            success: function(data) {
+              data[1].forEach(function(item) {
+                  console.log();
+                  $("#name").append("<tr><td>"+item+"</td></tr>");
+                  var value = $("#title").val();
+                  console.log("value="+value);
+                  if(item.toLowerCase() == value.toLowerCase())
+                    flag = i;
+                  else i++;
+                  console.log("i="+i+"flag="+flag);
+
+              });
+
+              i = 1;
+
+              data[3].forEach(function(item) {
+                  $("#link").append("<tr><td>"+item+"</td></tr>");
+                  if(i == flag){
+                    $("#response").append(item);
+                    i++;
+                     url = $("#response").val();
+                     console.log("url="+url);
+                  }
+                  else i++;
+              });
+/*
+          $.ajax({
+              type: 'POST',
+              url: '/getEntities',
+              data: {"url":url},
+              error: function(e) {
+                console.log(e+"2");
+
+              },
+              success: function(data) {
+                $("#entity_response").append(data);
+              }
+            });*/
+          });
+      });
+
+
+
+    });
+    </script>
+</html>
